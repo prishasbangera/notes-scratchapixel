@@ -6,6 +6,8 @@
  * 
  */
 
+/// VECTORS ///////////////////////////////////////////////////////////////////////////////////
+
 #include <iostream>
 
 template<typename T>
@@ -31,7 +33,7 @@ public:
     { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
 };
 
-// Vector utility functions /////////////////////////////////
+// Vector utility functions //////////////////////////////////////////////////////////////////
 
 template<typename T>
 T length(const Vec3<T> &v)
@@ -69,10 +71,40 @@ Vec3<T> cross(Vec3<T> &a, const Vec3<T> &b)
     );
 }
 
-typedef Vec3<float> Vec3f;
+typedef Vec3<float> vec3;
 
-Vec3<float> a;
-Vec3f b;
+/// MATRICES ///////////////////////////////////////////////////////////////////////////////////
+
+template<typename T>
+class Matrix44
+{
+public:
+    // init to identity matrix
+    T m[4][4] = {
+        {1, 0, 0, 0},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1}
+    };
+    Matrix44() {}
+    // overloading operators
+    const T* operator [] (uint8_t i) const { return m[i]; }
+    Matrix44 operator * (const Matrix44 &r) const
+    {
+        Matrix44 mult;
+        for (uint8_t i = 0; i < 4; ++i) {
+            for (uint8_t j = 0; j < 4; ++j) {
+                mult[i][j] = m[i][0] * r[0][j] +
+                             m[i][1] * r[1][j] +
+                             m[i][2] * r[2][j] +
+                             m[i][3] * r[3][j];
+            }
+        }
+        return mult;
+    }
+
+};
+typedef Matrix44<float> mat4;
 
 int main() {
 
