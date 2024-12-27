@@ -31,6 +31,16 @@ public:
     // vector multiplication
     Vec3<T> operator * (const Vec3<T> &v) const
     { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
+    // matrix multiplication
+    Vec3<T>& operator *= (const Matrix44 &m) {
+        T xx = x * m[0][0] + y * m[1][0] + z * m[2][0];
+        T yy = x * m[0][1] + y * m[1][1] + z * m[2][1];
+        T zz = x * m[0][2] + y * m[1][2] + z * m[2][2];
+        x = xx;
+        y = yy;
+        z = zz;
+        return *this;
+    }
 };
 
 // Vector utility functions //////////////////////////////////////////////////////////////////
@@ -87,6 +97,29 @@ public:
         {0, 0, 0, 1}
     };
     Matrix44() {}
+    // mult by Vec3
+    Vec3 multVec3(const Vec3<T> &v) {
+        T x = v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0] + m[3][0];
+        T y = v.x * m[0][1] + v.y * m[1][1] + v.z * m[2][1] + m[3][1];
+        T z = v.x * m[0][2] + v.y * m[1][2] + v.z * m[2][2] + m[3][2];
+        T w = v.x * m[0][3] + v.y * m[1][3] + v.z * m[2][3] + m[3][3];
+        if (w != 1 && w != 0) {
+            x /= w;
+            y /= w;
+            z /= w;
+        }
+        return Vec3(x, y, z);
+    }
+    // matrix operations
+    Matrix44 transpose() const {
+        Matrix44 res;
+        for (uint8_t i = 0; i < 4; ++i) {
+            for (uint8_t j = 0; j < 4; ++j) {
+                res[i][j] = m[j][i];
+            }
+        }
+        return res;
+    }
     // overloading operators
     const T* operator [] (uint8_t i) const { return m[i]; }
     Matrix44 operator * (const Matrix44 &r) const
@@ -105,8 +138,3 @@ public:
 
 };
 typedef Matrix44<float> mat4;
-
-int main() {
-
-    return 0;
-}
