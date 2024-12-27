@@ -6,6 +6,10 @@
  * 
  */
 
+// forward declaration
+template <typename T>
+class Matrix44;
+
 /// VECTORS ///////////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -32,7 +36,7 @@ public:
     Vec3<T> operator * (const Vec3<T> &v) const
     { return Vec3<T>(x * v.x, y * v.y, z * v.z); }
     // matrix multiplication
-    Vec3<T>& operator *= (const Matrix44 &m) {
+    Vec3<T>& operator *= (const Matrix44<T> &m) {
         T xx = x * m[0][0] + y * m[1][0] + z * m[2][0];
         T yy = x * m[0][1] + y * m[1][1] + z * m[2][1];
         T zz = x * m[0][2] + y * m[1][2] + z * m[2][2];
@@ -80,6 +84,13 @@ Vec3<T> cross(Vec3<T> &a, const Vec3<T> &b)
         a.x * b.y - a.y * b.x
     );
 }
+
+// spherical to cartesian
+template<typename T>
+Vec3<T> sphericalToCartesian(const T &theta, const T &phi) {
+    return Vec3<T>(cos(phi) * sin(theta), sin(phi) * sin(theta), cos(theta));
+}
+
 
 typedef Vec3<float> vec3;
 
@@ -137,4 +148,11 @@ public:
     }
 
 };
+
 typedef Matrix44<float> mat4;
+
+int main() {
+    Vec3<double> b = sphericalToCartesian(89.0, 7.0);
+    printf("x, %f", b.x);
+    return 0;
+}
