@@ -85,14 +85,28 @@ Vec3<T> cross(Vec3<T> &a, const Vec3<T> &b)
     );
 }
 
-// spherical to cartesian
+/// spherical to cartesian
 template<typename T>
-Vec3<T> sphericalToCartesian(const T &theta, const T &phi) {
+Vec3<T> sphericalToCartesian(const T &theta, const T &phi)
+{
     return Vec3<T>(cos(phi) * sin(theta), sin(phi) * sin(theta), cos(theta));
 }
 
-
 typedef Vec3<float> vec3;
+
+// /// Coordinate system come back later
+// void CoordinateSystem(vec3& v1, vec3& v2, vec3& v3)
+// {
+    
+//     if (fabs(v1.x) > sqrt(v1.y)) {
+
+
+//     } else {
+//         // for N = z axis
+
+//     }
+//     v3 = cross(v1, v2);
+// }
 
 /// MATRICES ///////////////////////////////////////////////////////////////////////////////////
 
@@ -108,7 +122,7 @@ public:
         {0, 0, 0, 1}
     };
     Matrix44() {}
-    // mult by Vec3
+    /// mult by Vec3
     Vec3 multVec3(const Vec3<T> &v) {
         T x = v.x * m[0][0] + v.y * m[1][0] + v.z * m[2][0] + m[3][0];
         T y = v.x * m[0][1] + v.y * m[1][1] + v.z * m[2][1] + m[3][1];
